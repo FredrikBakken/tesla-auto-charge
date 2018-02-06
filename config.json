@@ -1,0 +1,17 @@
+{
+    "__comment": "Tesla Auto Charge (TAC) configuration file",
+    
+    "vehicle-authentication": {
+        "password": "",
+        "username": ""
+    },
+            
+    "elspot-settings": {
+        "location": ""
+    },
+    
+    "settings-authentication": {
+        "username": "admin",
+        "password": "qwerty"
+    }
+}

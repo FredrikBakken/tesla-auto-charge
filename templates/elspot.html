@@ -1,0 +1,83 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Electrical Spot Prices</h1>
+    </div>
+    <div style="margin: 30px 0">
+        <h5 class="display-5"><b>Date: </b> {{spot_date}}</h5>
+        <h5 class="display-5"><b>Location: </b> {{spot_location}}</h5>
+    </div>
+
+    <canvas id="Elspot_chart" width="205" height="60"></canvas>
+
+    </br>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Time Frame</th>
+                <th scope="col">Electrical Spot Price</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for spot in spot_prices %}
+        <tr>
+            <th>{{spot[0]}}</th>
+            <th>€{{spot[1]}}/MWh</th>
+        </tr>
+        {% endfor %}
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+        </tbody>
+    </table>
+
+    <script src="{{url_for('static', filename='scripts/Chart.js')}}"></script>
+    <script>
+        var ctx = document.getElementById("Elspot_chart");
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"],
+                datasets: [{
+                    label: 'EUR/MWh',
+                    data: [ {% for item in values %}
+                                {{item}},
+                            {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 5
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:false
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endblock %}

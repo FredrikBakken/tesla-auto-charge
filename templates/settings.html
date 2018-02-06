@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Application Settings</h1>
+    </div>
+
+    {% from "includes/_formhelpers.html" import render_field %}
+    <div style="margin: 30px 0">
+        <h5 class="display-5"><b>User Settings</b></h5>
+        <form method="POST" action="/settings">
+            {{ basic_authentication_form.csrf_token }}
+            {{ basic_authentication_form.username.label }} {{ basic_authentication_form.username(size=30) }}
+            {{ basic_authentication_form.password.label }} {{ basic_authentication_form.password(size=30) }}
+            {{ basic_authentication_form.newpassword.label }} {{ basic_authentication_form.newpassword(size=30) }}
+            </br><input type="submit" value="Change Password">
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% if error %}
+            <p class=error><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+    </div>
+
+    <div style="margin: 30px 0">
+        <h5 class="display-5"><b>Electrical Spot Settings</b></h5>
+        <p>TODO</p>
+    </div>
+
+    <div style="margin: 30px 0">
+        <h5 class="display-5"><b>Tesla Settings</b></h5>
+        <p>TODO</p>
+    </div>
+{% endblock %}

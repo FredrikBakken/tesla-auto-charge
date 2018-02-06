@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Welcome to Tesla Auto Charge</h1>
+        <p class="lead">The automated charging application for your Tesla Model S/X, based on electrical spot prices from <a href="https://www.nordpoolgroup.com" target="_blank">Nord Pool</a>.</p>
+    </div>
+
+    <img src="{{url_for('static', filename='images/tesla_model_s.jpg')}}" width="100%" height="100%"/>
+{% endblock %}
