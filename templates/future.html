@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <div class="jumbotron text-center">
+        <h1>Future Charge</h1>
+    </div>
+
+    {% if not add_page %}
+    <div style="margin: 10px 0">
+        <h3><b>Vehicle Charge Status</b></h3>
+        <p>Charge schedule is configured to the electrical spot prices for: {{home_location}}</p>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="text-align:center">Vehicle connected</th>
+                    <th scope="col" style="text-align:center">Battery</th>
+                    <th scope="col" style="text-align:center">Charge power</th>
+                    <th scope="col" style="text-align:center">Charge current</th>
+                    <th scope="col" style="text-align:center">Charge voltage</th>
+                    <th scope="col" style="text-align:center">Time to fully charged</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th style="text-align:center">{{mt}}</th>
+                <th style="text-align:center">{{bl}}%</th>
+                <th style="text-align:center">{{cp}}kWh</th>
+                <th style="text-align:center">{{cc}}A</th>
+                <th style="text-align:center">{{cv}}V</th>
+                <th style="text-align:center">{{tfc}}</th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--
+    <div style="margin: 40px 0">
+        <h3><b>CHART OVERVIEW</b></h3>
+    </div>
+    -->
+
+    <div style="margin: 40px 0">
+        <h3><b>Planned Charge Sessions</b></h3>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" style="text-align:center">Date</th>
+                    <th scope="col" style="text-align:center">Time Frame</th>
+                    <th scope="col" style="text-align:center">Electrical Spot Price</th>
+                    <th scope="col" style="text-align:center">Charge time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in charge_schedule %}
+            <tr>
+                <th style="text-align:center">{{ row['date'] }}</th>
+                <th style="text-align:center">{{ row['hour'] }}</th>
+                <th style="text-align:center">€{{ row['price'] }}/MWh</th>
+                <th style="text-align:center">{{ row['min'] }} min</th>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <h5>Not Configured</h5>
+    <p>The vehicle is not ready to be charged. Charge configuration will be setup as soon as the vehicle is ready to charge.</p>
+
+    <p>Also make sure that you have configured the application correct on the <a href="/settings">Settings</a> page.</p>
+    {% endif %}
+{% endblock %}

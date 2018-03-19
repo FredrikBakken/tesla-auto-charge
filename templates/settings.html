@@ -7,15 +7,145 @@
 
     {% from "includes/_formhelpers.html" import render_field %}
     <div style="margin: 30px 0">
-        <h5 class="display-5"><b>User Settings</b></h5>
-        <form method="POST" action="/settings">
-            {{ basic_authentication_form.csrf_token }}
-            {{ basic_authentication_form.username.label }} {{ basic_authentication_form.username(size=30) }}
-            {{ basic_authentication_form.password.label }} {{ basic_authentication_form.password(size=30) }}
-            {{ basic_authentication_form.newpassword.label }} {{ basic_authentication_form.newpassword(size=30) }}
-            </br><input type="submit" value="Change Password">
-        </form>
+        {% if "set_auth" in set_auth[0] %}
+        <button onclick="viewer('user-settings')" class="btn btn-success" style="width:100%"><h5 class="display-5" style="text-align: center"><b>User Settings</b></h5></button>
+        {% else %}
+        <button onclick="viewer('user-settings')" class="btn btn-danger" style="width:100%"><h5 class="display-5" style="text-align: center"><b>User Settings</b></h5></button>
+        {% endif %}
 
+        <div id="user-settings" style="display: none">
+            {% if "set_username" in set_auth[1] %}
+            <button onclick="viewer('change-username')" class="btn btn-success" style="width:100%; margin: 20px 0;">Change Username</button></br>
+            {% else %}
+            <button onclick="viewer('change-username')" class="btn btn-danger" style="width:100%; margin: 20px 0;">Change Username</button></br>
+            {% endif %}
+            <form method="POST" action="/settings" id="change-username" class="form-horizontal" style="display: none; text-align: center; margin: 10px 0;">
+                {{ basicAuth_NewUserForm.csrf_token }}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="nuUsername"><b>{{ basicAuth_NewUserForm.nuUsername.label }}</b></label>
+                    {{ basicAuth_NewUserForm.nuUsername(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="nuPassword"><b>{{ basicAuth_NewUserForm.nuPassword.label }}</b></label>
+                    {{ basicAuth_NewUserForm.nuPassword(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="nuNewusername"><b>{{ basicAuth_NewUserForm.nuNewusername.label }}</b></label>
+                    {{ basicAuth_NewUserForm.nuNewusername(size=75) }}
+                </div>
+                <input type="submit" value="Update username" class="btn btn-primary" style="width:25%">
+            </form>
+
+            {% if "set_password" in set_auth[2] %}
+            <button onclick="viewer('change-password')" class="btn btn-success" style="width:100%; margin: 20px 0;">Change Password</button></br>
+            {% else %}
+            <button onclick="viewer('change-password')" class="btn btn-danger" style="width:100%; margin: 20px 0;">Change Password</button></br>
+            {% endif %}
+            <form method="POST" action="/settings" id="change-password" class="form-horizontal" style="display: none; text-align: center; margin: 10px 0;">
+                {{ basicAuth_NewPassForm.csrf_token }}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="npUsername"><b>{{ basicAuth_NewPassForm.npUsername.label }}</b></label>
+                    {{ basicAuth_NewPassForm.npUsername(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="npPassword"><b>{{ basicAuth_NewPassForm.npPassword.label }}</b></label>
+                    {{ basicAuth_NewPassForm.npPassword(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="npNewpassword"><b>{{ basicAuth_NewPassForm.npNewpassword.label }}</b></label>
+                    {{ basicAuth_NewPassForm.npNewpassword(size=75) }}
+                </div>
+                <input type="submit" value="Update password" class="btn btn-primary" style="width:25%">
+            </form>
+        </div>
+    </div>
+
+    <div style="margin: 30px 0">
+        {% if "set_location" in set_location[0] %}
+        <button onclick="viewer('elspot-settings')" class="btn btn-success" style="width:100%"><h5 class="display-5" style="text-align: center"><b>Location Settings</b></h5></button>
+        {% else %}
+        <button onclick="viewer('elspot-settings')" class="btn btn-danger" style="width:100%"><h5 class="display-5" style="text-align: center"><b>Location Settings</b></h5></button>
+        {% endif %}
+
+        <div id="elspot-settings" style="display: none">
+            <p style="text-align: center; margin: 20px 0;"><b>Current home location:</b> {{ current_location }}</p>
+            <form method="POST" action="/settings" class="form-horizontal" style="text-align: center; margin: 10px 0;">
+                {{ location_Form.csrf_token }}
+                <div class="form-group">
+                    {{ location_Form.locations }}
+                </div>
+                <input type="submit" value="Update location" class="btn btn-primary" style="width:25%">
+                <blockquote>Find your location at <a href="https://www.nordpoolgroup.com/Market-data1/#/nordic/map" target="_blank">Nord Pool.</a></blockquote>
+                <p style="text-align: center; margin: 10px 0;"><b>Important</b></br>Make sure that the home location is correct, as the charging of your vehicle will be based on this locations' electrical prices.</p>
+            </form>
+        </div>
+    </div>
+
+    <div style="margin: 30px 0">
+        {% if "set_vehicle" in set_vehicle[0] %}
+        <button onclick="viewer('vehicle-settings')" class="btn btn-success" style="width:100%"><h5 class="display-5" style="text-align: center"><b>Vehicle Settings</b></h5></button>
+        {% else %}
+        <button onclick="viewer('vehicle-settings')" class="btn btn-danger" style="width:100%"><h5 class="display-5" style="text-align: center"><b>Vehicle Settings</b></h5></button>
+        {% endif %}
+
+        <div id="vehicle-settings" style="display: none">
+            {% if "set_auth" in set_vehicle[1] %}
+            <button onclick="viewer('vehicle-auth')" class="btn btn-success" style="width:100%; margin: 20px 0;">Vehicle Authentication</button></br>
+            {% else %}
+            <button onclick="viewer('vehicle-auth')" class="btn btn-danger" style="width:100%; margin: 20px 0;">Vehicle Authentication</button></br>
+            {% endif %}
+            <form method="POST" action="/settings" id="vehicle-auth" class="form-horizontal" style="display: none; text-align: center; margin: 10px 0;">
+                {{ vehicleAuth_Form.csrf_token }}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="vaUsername"><b>{{ vehicleAuth_Form.vaUsername.label }}</b></label>
+                    {{ vehicleAuth_Form.vaUsername(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="vaPassword"><b>{{ vehicleAuth_Form.vaPassword.label }}</b></label>
+                    {{ vehicleAuth_Form.vaPassword(size=75) }}
+                </div>
+                <input type="submit" value="Update authentication" class="btn btn-primary" style="width:25%">
+            </form>
+
+            {% if "set_location" in set_vehicle[2] %}
+            <button onclick="viewer('vehicle-location')" class="btn btn-success" style="width:100%; margin: 20px 0;">Vehicle Charge Location</button></br>
+            {% else %}
+            <button onclick="viewer('vehicle-location')" class="btn btn-danger" style="width:100%; margin: 20px 0;">Vehicle Charge Location</button></br>
+            {% endif %}
+            <form method="POST" action="/settings" id="vehicle-location" class="form-horizontal" style="display: none; text-align: center; margin: 10px 0;">
+                <div class="form-group" id="map" style="width:100%; height: 500px;"></div>
+                {{ vehicleLocation_Form.csrf_token }}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="latitude"><b>{{ vehicleLocation_Form.latitude.label }}</b></label>
+                    {{ vehicleLocation_Form.latitude(size=75) }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="longitude"><b>{{ vehicleLocation_Form.longitude.label }}</b></label>
+                    {{ vehicleLocation_Form.longitude(size=75) }}
+                </div>
+                <input type="submit" value="Update charge location" class="btn btn-primary" style="width:25%">
+            </form>
+
+            <!--{% if "set_location" in set_vehicle[2] %}
+            <button onclick="viewer('vehicle-location')" class="btn btn-success" style="width:100%; margin: 20px 0;">Vehicle Charge Location</button></br>
+            {% else %}
+            <button onclick="viewer('vehicle-location')" class="btn btn-danger" style="width:100%; margin: 20px 0;">Vehicle Charge Location</button></br>
+            {% endif %}-->
+            <button onclick="viewer('vehicle-charge-time')" class="btn btn-success" style="width:100%; margin: 20px 0;">Vehicle Charge Time</button></br>
+            <form method="POST" action="/settings" id="vehicle-charge-time" class="form-horizontal" style="display: none; text-align: center; margin: 10px 0;">
+                {{ vehicleBatteryCharge_Form.csrf_token }}
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="toDate"><b>{{ vehicleBatteryCharge_Form.toDate.label }}</b></label></br>
+                    {{ vehicleBatteryCharge_Form.toDate }}
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2"><b>Time</b></label></br>
+                    {{ vehicleBatteryCharge_Form.toTimeHour }} : {{ vehicleBatteryCharge_Form.toTimeMinute }}
+                </div>
+                <input type="submit" value="Update charge time" class="btn btn-primary" style="width:25%">
+            </form>
+        </div>
+    
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 <ul class=flashes>
@@ -29,15 +159,83 @@
             <p class=error><strong>Error:</strong> {{ error }}
         {% endif %}
 
+        <p></br></p>
+        <p></br></p>
+        <p></br></p>
+
     </div>
 
-    <div style="margin: 30px 0">
-        <h5 class="display-5"><b>Electrical Spot Settings</b></h5>
-        <p>TODO</p>
-    </div>
+    <script>
+        function viewer(id) {
+            var x = document.getElementById(id)
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            if (id == "vehicle-location") {
+                initMap()
+            }
+        }
+    </script>
 
-    <div style="margin: 30px 0">
-        <h5 class="display-5"><b>Tesla Settings</b></h5>
-        <p>TODO</p>
-    </div>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+    <script type="text/javascript">
+        var map;
+        var marker = false;
+
+        function initMap() {
+            var centerOfMap = new google.maps.LatLng({{ve_lat}},{{ve_lng}});
+        
+            // Map options
+            var options = {
+            center: centerOfMap,
+            zoom: {{ve_zoom}}
+            };
+        
+            // Create the map object
+            map = new google.maps.Map(document.getElementById('map'), options);
+        
+            //Listen for any click events
+            google.maps.event.addListener(map, 'click', function(event) {                
+                var clickedLocation = event.latLng;
+                
+                if(marker === false) {
+                    marker = new google.maps.Marker({
+                        position: clickedLocation,
+                        map: map,
+                        draggable: true
+                    });
+
+                    // Check for click events
+                    google.maps.event.addListener(marker, 'dragend', function(event) {
+                        markerLocation();
+                    });
+                } else {
+                    marker.setPosition(clickedLocation);
+                }
+                markerLocation();
+            });
+            {% if "y" in add_marker %}
+            addMarker(centerOfMap);
+            {% endif %}
+        }
+        
+        // Function for adding a marker to the page.
+        function addMarker(location) {
+            marker = new google.maps.Marker({
+                position: location,
+                map: map
+            });
+        }
+
+        // Add marker location to form
+        function markerLocation() {
+            var currentLocation = marker.getPosition();
+
+            document.getElementById('latitude').value = currentLocation.lat();
+            document.getElementById('longitude').value = currentLocation.lng();
+        }
+    </script>
 {% endblock %}

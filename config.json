@@ -1,17 +1,28 @@
 {
-    "__comment": "Tesla Auto Charge (TAC) configuration file",
+    "vehicle-settings": {
+        "home-latitude": "",
+        "username": "",
+        "home-longitude": "",
+        "current-longitude": "",
+        "current-latitude": "",
+        "password": ""
+    },
     
-    "vehicle-authentication": {
-        "password": "",
-        "username": ""
-    },
-            
-    "elspot-settings": {
-        "location": ""
-    },
+    "__comment": "Tesla Auto Charge (TAC) configuration file",
     
     "settings-authentication": {
         "username": "admin",
         "password": "qwerty"
+    },
+    
+    "elspot-settings": {
+        "home-location": ""
+    },
+
+    "charge-schedule": [],
+
+    "charge-timer": {
+        "to-date": "",
+        "to-hour": ""
     }
 }
